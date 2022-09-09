@@ -1,26 +1,24 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Group
 
+
 SHOW_POSTS = 10
 
 
-# Функция для главной страницы
 def index(request):
-    template = 'posts/index.html'  # Шаблон
-    posts = Post.objects.all()[:SHOW_POSTS]  # Посты
+    posts = Post.objects.select_related('group').all()[:SHOW_POSTS]
     context = {
-        'posts': posts
+        'posts': posts,
     }
+    template = 'posts/index.html'
     return render(request, template, context)
 
 
-# Функция для страницы группы
-def group_posts(request, slug):
-    template = 'posts/group_list.html'  # Шаблон
-    group = get_object_or_404(Group, slug=slug)  # Группа
-    posts = group.posts.all()[:SHOW_POSTS]  # Посты
+def group_posts(request, group_slug):
+    group = get_object_or_404(Group, slug=group_slug)
+    posts = Post.objects.filter(group=group)[:SHOW_POSTS]
     context = {
         'group': group,
-        'posts': posts
+        'posts': posts,
     }
-    return render(request, template, context)
+    return render(request, 'posts/group_list.html', context)

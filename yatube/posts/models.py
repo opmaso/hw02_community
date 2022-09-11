@@ -11,7 +11,7 @@ class Group(models.Model):
     slug = models.SlugField(
         max_length=255,
         unique=True,
-        verbose_name='URL'
+        verbose_name='GROUPS'
     )
     description = models.TextField()
 
@@ -32,10 +32,10 @@ class Post(models.Model):
     )
     group = models.ForeignKey(
         Group,
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        related_name='group',
+        related_name='posts',
     )
 
     class Meta:

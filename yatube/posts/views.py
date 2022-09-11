@@ -6,7 +6,7 @@ SHOW_POSTS = 10
 
 
 def index(request):
-    posts = Post.objects.select_related('group').all()[:SHOW_POSTS]
+    posts = Post.objects.select_related('group')[:SHOW_POSTS]
     context = {
         'posts': posts,
     }
